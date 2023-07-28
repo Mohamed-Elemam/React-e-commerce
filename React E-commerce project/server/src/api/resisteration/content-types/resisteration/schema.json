@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "resisterations",
+  "info": {
+    "singularName": "resisteration",
+    "pluralName": "resisterations",
+    "displayName": "Registration",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "userName": {
+      "type": "string",
+      "required": true,
+      "maxLength": 20,
+      "minLength": 3
+    },
+    "userEmail": {
+      "type": "email",
+      "unique": true,
+      "required": true
+    },
+    "password": {
+      "type": "password",
+      "required": true
+    },
+    "cPassword": {
+      "type": "password",
+      "required": true
+    }
+  }
+}

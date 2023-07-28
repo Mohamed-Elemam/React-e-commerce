@@ -1,0 +1,7 @@
+    --product-title-color: #000000;
+    --product-title-color-hover: #2453d3;
+    --product-price-color: #000000;
+    --product-price-color-second: #8c8c8c;
+    --product-price-sale-color: #d32424;
+    --product-vendors-color: #8c8c8c;
+    --product-vendors-color-hover: #2453d3;
