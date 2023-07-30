@@ -1,5 +1,5 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react";
-import { styled } from "@mui/material/styles";
 import { Box, Grid, Container } from "@mui/material";
 
 const companyData = [

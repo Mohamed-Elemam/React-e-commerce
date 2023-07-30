@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 
 
 
-//http://localhost:1337/api/products?populate=*&?filters[category][$eq]=laptop
 export default function FeaturedCategories() {
   const navigate = useNavigate();
   

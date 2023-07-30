@@ -2,8 +2,8 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
+// eslint-disable-next-line no-unused-vars
 import * as React from "react";
-import FormControl from "@mui/base/FormControl";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
@@ -14,11 +14,11 @@ import {
   CssBaseline,
   TextField,
   Link,
-  Grid,
   Box,
   Typography,
   Container,
 } from "@mui/material";
+import { Toaster, toast } from "react-hot-toast";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -41,11 +41,10 @@ export default function Register() {
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-    password: Yup.string()
-      // .min(8, "Min length is 8 characters")
+      password: Yup.string()
       .matches(
-        /^(?=.*[A-Z])(?=.*[.!@#$%^&*])(?=.*[a-z])(?=.*[0-9]).{8,}$/,
-        "Password minimum lengh must 8 characters and contain at least one uppercase letter, one lowercase letter, one digit, and one special character."
+        /^(?=.*[A-Z])(?=.*[.!@#$%^&*])(?=.*[a-z]).{8,}$/,
+        "Password minimum length must be 8 characters or more and contain at least one uppercase letter, one lowercase letter, and one special character."
       )
       .required("Password is required"),
     rePassword: Yup.string()
@@ -71,23 +70,32 @@ export default function Register() {
         import.meta.env.VITE_REGISTERATION_API_LINK+"auth/signup",
         values
       );
-      console.log(data);
-      console.log(data.token)
+      
       localStorage.setItem('userToken',data.token)
       setLoading(false);
-      // console.log(values);
-      
       navigate('/');
+      toast.success('Signup success')
     } catch (error) {
       console.log(error);
       setLoading(false);
+      toast.error(error.response.data.message)
       setApiError(error.response.data.message);
     }
   }
 
- 
+  React.useEffect(() => {
+    const userToken = localStorage.getItem("userToken");
+    if (userToken) {
+      navigate("/");}   
+  }, [])
+  
   return (
     <Container>
+      
+<Toaster
+  position="top-center"
+  reverseOrder={false}
+/>
     <Helmet>
     <title>Sign UP</title>
 </Helmet>

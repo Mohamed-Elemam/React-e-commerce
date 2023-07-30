@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-unused-vars
 import React from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -9,7 +10,7 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Typography, Button, Box, Stack } from "@mui/material";
-import "../index.css";
+import "../index.scss";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { useNavigate } from "react-router-dom";
 
@@ -44,7 +45,6 @@ export default function Slider() {
   return (
     <Stack
 
-    // sx={{ mt:1}}
     >
       <Swiper
         spaceBetween={30}
@@ -53,14 +53,10 @@ export default function Slider() {
           delay: 5000,
           disableOnInteraction: false,
         }}
-        // pagination={{
-        //   clickable: true,
-
-        // }}
+        
         navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
-        // style={{padding:'1 px'}}
       >
         {/* ============================slide ======================= */}
 
