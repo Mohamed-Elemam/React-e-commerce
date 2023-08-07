@@ -4,7 +4,7 @@ import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
-import { Link, Typography } from "@mui/material";
+import { Button, Link, Typography } from "@mui/material";
 import Badge from "@mui/material/Badge";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 // import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
@@ -16,7 +16,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
-import AccountCircle from "@mui/icons-material/AccountCircle";
 import { useSelector } from 'react-redux';
 
  const userToken = localStorage.getItem("userToken");
@@ -100,8 +99,30 @@ export default function Navbar() {
     >
       {userToken ? (
         <MenuItem>
-          <p>{user?.name}</p>
-          <AccountCircle sx={{ marginLeft: "8px" }} />
+
+        {user?.length >6 ?
+       (<>
+       
+        <p>
+        {user?.name}
+
+        </p>
+          <PersonOutlineOutlinedIcon sx={{ marginLeft: "8px" }} />
+       </>
+          )
+      :(
+      <>
+ <Typography variant="h6" mx={2}>
+        {user?.name}
+          </Typography>
+          <PersonOutlineOutlinedIcon  />
+      </>
+
+
+      )
+      
+         }
+       
         </MenuItem>
       ) : (
         <MenuItem
@@ -191,21 +212,21 @@ export default function Navbar() {
                 alignItems="center"
               >
                 <p>{user?.name}</p>
-                <AccountCircle sx={{ marginLeft: "8px" }} />
+                <PersonOutlineOutlinedIcon sx={{ marginLeft: "8px" }} />
               </Box>
             ) : (
-              <IconButton
+              <Button
                 aria-label="account"
                 color="inherit"
                 onClick={() => {
                   navigate("/login");
                 }}
               >
-                <Typography variant="h6" mx={2}>
+                <Typography variant="body1" mx={1}>
                   login
                 </Typography>
-                <PersonOutlineOutlinedIcon sx={{}} />
-              </IconButton>
+                <PersonOutlineOutlinedIcon  />
+              </Button>
             )}
 
             <IconButton

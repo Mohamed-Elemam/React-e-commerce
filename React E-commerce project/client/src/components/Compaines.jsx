@@ -5,27 +5,27 @@ import { Box, Grid, Container } from "@mui/material";
 const companyData = [
   {
     name: "AMD",
-    imageSrc: "../../public/companies/amd.png",
+    imageSrc: "./companies/amd.png",
   },
   {
     name: "Meta",
-    imageSrc: "../../public/companies/meta.png",
+    imageSrc: "./companies/meta.png",
   },
   // {
   //   name: "samsung",
-  //   imageSrc: "../../public/companies/samsung.webp",
+  //   imageSrc: "./companies/samsung.webp",
   // },
   {
     name: "OpenAI",
-    imageSrc: "../../public/companies/openai.png",
+    imageSrc: "./companies/openai.png",
   },
   {
     name: "Zoom",
-    imageSrc: "../../public/companies/zoom.png",
+    imageSrc: "./companies/zoom.png",
   },
   {
     name: "tencent",
-    imageSrc: "../../public/companies/tencent.png",
+    imageSrc: "./companies/tencent.png",
   },
 ];
 

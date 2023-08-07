@@ -14,14 +14,13 @@ import Products from "./Products/Products.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
-// import { useState } from 'react';
 export default function MayLike() {
   const [apiData, setApiData] = useState([]);
 
   async function getAllProducts() {
     try {
       const { data } = await axios.get(
-        import.meta.env.VITE_PRODUCTS_API_LINK + "/api/products?populate=*"
+        import.meta.env.VITE_PRODUCTS_API_LINK + "/api/products?populate=*&filters[category][$eq]=tablet"
       );
 
       setApiData(data.data);
@@ -64,15 +63,15 @@ export default function MayLike() {
             }}
           >
             <Link to={"/category/tablet"}style={{ position: "relative",}}>
-           <Box variant={'div'} height={'100%'}>
+           <Box variant={'div'} height={'100%'}sx={{display:{xs:'none',md:'block'}}}>
                <img
-                 src="public/Group_5919.webp"
+                 src="./Group_5919.webp"
                  height={"100%"}
                  alt="img"
                  width={"100%"}
                  style={{ borderRadius: "5px" }}
                />
-               <Box sx={{ position: "absolute", top: "2%", left: "14%" }}>
+               <Box sx={{ position: "absolute", top: "2%", left: "14%",color:'#000' }}>
                  <Typography variant="h6" paragraph>
                    Flex on All <br />
                    The Others

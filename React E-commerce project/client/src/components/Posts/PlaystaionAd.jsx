@@ -9,9 +9,9 @@ export default function PlaystaionAd() {
   const navigate = useNavigate()
   return (
     <>
-      <Container>
+      <Container sx={{display:{sm:'block' ,xs:'none' }}}>
         <Box sx={{position:'relative' , ";hover":{cursor:'pointer'}}} onClick={()=>{navigate('/product/8')}}>
-          <img  style={{borderRadius:'20px'}} src="public/playstaion.jpg" width={'100%'} alt="playstaion" />
+          <img  style={{borderRadius:'20px'}} src="./playstaion.jpg" width={'100%'} alt="playstaion" />
 
         <Box   sx={{
                 position: "absolute",

@@ -10,11 +10,14 @@ import PlaystaionAd from './Posts/PlaystaionAd.jsx';
 import BackTop from './utils/BackTop.jsx';
 import { Helmet } from 'react-helmet';
 import MayLike from './MayLike.jsx';
+import { Offline, Online } from "react-detect-offline";
+import OfflinePage from './utils/OfflinePage.jsx';
 
 export default function Home() {
   return (
     <>
-      <Helmet>
+  {/* <Online> */}
+          <Helmet>
     <title>TechMart</title>
 </Helmet>
 
@@ -28,6 +31,8 @@ export default function Home() {
 
     <Compaines/>
 <BackTop />
+    {/* </Online> */}
+{/* <Offline><OfflinePage/></Offline> */}
     </>
   )
 }

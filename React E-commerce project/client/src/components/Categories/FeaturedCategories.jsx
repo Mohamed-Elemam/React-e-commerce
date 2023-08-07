@@ -36,7 +36,7 @@ export default function FeaturedCategories() {
       
     },
     {
-      name: "Smart Watch",
+      name: "SmartWatch",
       icon: WatchOutlined,
     },
     {
@@ -66,7 +66,7 @@ export default function FeaturedCategories() {
 
       <Grid container spacing={2} mt={3}>
         {categories.map((category, index) => (
-          <Grid item md={3} sm={6} xs={12} key={index} onClick={()=>{navigate(`/category/${category.name}`)}}>
+          <Grid item md={3} sm={6} xs={6} key={index} onClick={()=>{navigate(`/category/${category.name}`)}}>
             <Box
               p={4}
               sx={{
@@ -74,7 +74,7 @@ export default function FeaturedCategories() {
                 border: "1px solid black",
                 textAlign: "center",
                 borderRadius: '5px',
-                ':hover': { color: 'info.main', border: '#09c 1px solid', cursor: 'pointer' }
+                ':hover': { color: 'info.main', border: '#1976d2 1px solid', cursor: 'pointer' }
               }}
             >
               <category.icon sx={{ fontSize: 40 }} />

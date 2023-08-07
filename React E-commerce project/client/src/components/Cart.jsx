@@ -9,7 +9,9 @@ import {
   IconButton,
   Tooltip,
   Box,
+  Divider,
 } from "@mui/material";
+
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
@@ -35,6 +37,7 @@ export default function Cart() {
   const totalAmount = cartItems.reduce((total, ele) => {
     return total + ele.attributes.price * ele.quantity;
   }, 0);
+  const totalItemCount = cartItems.reduce((total, ele) => total + ele.quantity, 0);
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -66,7 +69,7 @@ export default function Cart() {
   return (
     <Container my={8}>
       <Helmet>
-        <title>cart</title>
+        <title>Cart</title>
       </Helmet>
       {cartItems?.length === 0 ? (
         <div style={{ textAlign: "center" }}>
@@ -84,71 +87,112 @@ export default function Cart() {
         </div>
       ) : (
         <>
-          <Typography variant="h3" color="initial">
-            Cart
+          <Typography
+            sx={{ typography: { md: "h4", xs: "h6" } }}
+            my={2}
+            color="initial"
+          >
+            Shooping Cart
+            ({totalItemCount})
           </Typography>
 
           <Stack
             display={"flex"}
             alignItems={"center"}
             justifyContent={"center"}
+            sx={{
+            fontWeight: 500 }}
+            my={2}
           >
             {cartItems?.map((ele, index) => (
-              <Grid
-                container
-                spacing={2}
-                my={5}
-                textAlign={"center"}
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"center"}
-                key={index}
-              >
-                <Grid item xs={2}>
-                  <img
-                    src={ele?.attributes?.images?.data[0].attributes.url}
-                    style={{ width: "50%", borderRadius: "5px" }}
-                    alt="cartImage"
-                  />
+              <>
+                <Grid
+                  container
+                  textAlign={"center"}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  key={index}
+                >
+                  <Grid item xs={2} sx={{ width: { md: "50%", xs: "100%" } }}>
+                    <img
+                      src={ele?.attributes?.images?.data[0].attributes.url}
+                      style={{ width: "100%", borderRadius: "5px" }}
+                      alt="cartImage"
+                    />
+                  </Grid>
+                  <Grid item xs={7} sx={{ fontSize:{md:'19px' ,sm:'15px',xs: "14px"} }}>
+                    {ele?.attributes?.productTitle}
+                  </Grid>
+                  <Grid item xs={3} sx={{ fontSize: {md:'19px',sm:'15px' ,xs: "13px"} }}>
+                    {ele?.attributes?.price} EGP
+                  </Grid>
                 </Grid>
-                <Grid item xs={3}>
-                  {ele?.attributes?.productTitle}
+
+
+                
+                <Grid
+                  container
+                  // mb={5}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                >
+                  <Grid item xs={10} >
+                    <IconButton
+                      size="small"
+                      color="error"
+                      sx={{ mr: 1.5 }}
+                      onClick={() => dispatch(decrementQuantity(ele.id))}
+                    >
+                      <RemoveCircleOutlineIcon
+                        sx={{
+                          fontSize: {
+                            xs: "25px",
+                            md: "35px",
+                          },
+                        }}
+                      />
+                    </IconButton>
+
+                    {ele?.quantity}
+
+                    <IconButton
+                      variant="contained"
+                      color="primary"
+                      sx={{ mx: 1.5 }}
+                      onClick={() => {
+                        dispatch(incrementQuantity(ele.id));
+                      }}
+                    >
+                      <AddCircleOutlineIcon
+                        sx={{
+                          fontSize: {
+                            xs: "25px",
+                            md: "35px",
+                          },
+                        }}
+                      />
+                    </IconButton>
+                  </Grid>
+                  <Grid item xs={2}>
+                    <IconButton
+                      color="error"
+                      onClick={() => dispatch(removeItem(ele.id))}
+                    >
+                      <DeleteIcon
+                        sx={{
+                          fontSize: {
+                            xs: "25px",
+                            md: "35px",
+                          },
+                        }}
+                      />
+                    </IconButton>
+                  </Grid>
+                  <Divider width={"100%"} flexItem></Divider>
                 </Grid>
-                <Grid item xs={2}>
-                  {ele?.attributes?.price * ele?.quantity} EGP
-                </Grid>
-                <Grid item xs={1}>
-                  <IconButton
-                    size="small"
-                    color="error"
-                    onClick={() => dispatch(decrementQuantity(ele.id))}
-                  >
-                    <RemoveCircleOutlineIcon fontSize="large" />
-                  </IconButton>
-                </Grid>
-                <Grid item xs={2}>
-                  {ele?.quantity}
-                </Grid>
-                <Grid item xs={1}>
-                  <IconButton
-                    variant="contained"
-                    color="primary"
-                    onClick={() => {
-                      dispatch(incrementQuantity(ele.id));
-                    }}
-                  >
-                    <AddCircleOutlineIcon fontSize="large" />
-                  </IconButton>
-                </Grid>
-                <Grid item xs={1}>
-                  <IconButton
-                    color="error"
-                    onClick={() => dispatch(removeItem(ele.id))}
-                  >
-                    <DeleteIcon fontSize="large" />
-                  </IconButton>
-                </Grid>
-              </Grid>
+              </>
             ))}
           </Stack>
         </>
@@ -161,9 +205,13 @@ export default function Cart() {
         flexDirection={"row"}
         sx={{ textAlign: { xs: "center" }, justifyContent: { xs: "center" } }}
       >
-        <Typography variant="h5" flexGrow={1} my={4}>
-          Cart total price is{" "}
-          <Box component="span" mx={2}>
+        <Typography
+          sx={{ typography: { md: "h5", xs: "" } }}
+          flexGrow={1}
+          my={4}
+        >
+          Cart total price is
+          <Box component="span" mx={1}>
             {totalAmount} EGP
           </Box>
         </Typography>
@@ -210,7 +258,7 @@ export default function Cart() {
                 dispatch(clearCart());
               }}
             >
-              Proceed to checkout
+              Continue
             </Button>
           </Box>
         </Modal>

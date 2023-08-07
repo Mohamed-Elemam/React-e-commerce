@@ -14,7 +14,7 @@ export default function NotFound() {
     // sx={{height:'100vh'}}
     >
         
-        <img width={'50%'} src="public\404Error.svg" alt="404 page not found" />
+        <img width={'50%'} src="./404Error.svg" alt="404 page not found" />
         
     </Stack></>
   )

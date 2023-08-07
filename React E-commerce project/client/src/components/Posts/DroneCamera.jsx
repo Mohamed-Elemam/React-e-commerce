@@ -11,15 +11,16 @@ export default function DroneCamera() {
   return (
     <>
       <Box
-        sx={{ my: 5, ";hover": { cursor: "pointer" } }}
+        sx={{ my: 5, ";hover": { cursor: "pointer" } ,display:{sm:'block' ,xs:'none' }}}
         onClick={() => {
-          navigate("/product/18");
+          navigate("/product/18")
+
         }}
       >
         <Box sx={{ position: "relative" }}>
           <img
             style={{ borderRadius: "20px" }}
-            src="./../../../public/drone.webp"
+            src="./drone.webp"
             width={"100%"}
             alt="drone camera"
           />
@@ -33,14 +34,18 @@ export default function DroneCamera() {
               textAlign: "left",
             }}
           >
-            <Typography variant="h4" color="initial">
+            <Typography 
+             sx={{ typography: { md: "h4", sm: "h5" } }}
+            
+             color="initial">
               Hasselblad Camera,
               <br />
               Create to Inspire
             </Typography>
 
             <Typography variant="subtitle2" my={1} color="#777">
-              Get a feel for what it is like to own Mavic 3 Classic in advance.
+              Get a feel for what it is like
+               to own Mavic 3 Classic in advance.
             </Typography>
 
             <Button variant="contained" endIcon={<ArrowForwardIosIcon />}>

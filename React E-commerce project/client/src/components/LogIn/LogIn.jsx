@@ -8,6 +8,7 @@ import {
   Link,
   Typography,
   Container,
+  Divider,
 } from "@mui/material";
 import { useState , useEffect} from "react";
 import * as Yup from "yup";
@@ -19,24 +20,6 @@ import { Helmet } from "react-helmet";
 import { useFormik } from "formik";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="/">
-        Techmart
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 
 export default function LogIn() {
@@ -218,7 +201,10 @@ useEffect(() => {
                   </Button>
                 </>
               )}
+              <Divider flexItem   style={{margin:'auto' , width:'75%' }}>
               <h3>or </h3>
+                 </Divider>
+
               {demoLoading ? (
                 <>
                   <LoadingButton
@@ -252,9 +238,8 @@ useEffect(() => {
               </Link>
             </Box>
           </Box>
-          <Copyright sx={{ mt: 2, mb: 4 }} />
         </Container>
-      )
+      
     </>
   );
 }

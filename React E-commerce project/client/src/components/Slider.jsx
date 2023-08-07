@@ -53,8 +53,8 @@ export default function Slider() {
           delay: 5000,
           disableOnInteraction: false,
         }}
+
         
-        navigation={true}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
@@ -67,7 +67,7 @@ export default function Slider() {
               sx={{
                 visibility: {
                   xs: "hidden",
-                  md: "visible",
+                  sm: "visible",
                   ":hover": { cursor: "pointer" },
                 },
               }}

@@ -20,6 +20,7 @@ import {
 } from "@mui/material";
 import { Toaster, toast } from "react-hot-toast";
 
+
 export default function Register() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -239,17 +240,18 @@ export default function Register() {
             Sign Up
           </Button>)}
         </Box>
-        <Box>
+        <Box  my={2}>
           <Link
-            href="#"
+            href="/login"
             variant="body2"
-         
+        
           >
             <Typography >
               {"Already have an account? Log In"}
             </Typography>
           </Link>
         </Box>
+     
       </Box>
     </Container>
   );

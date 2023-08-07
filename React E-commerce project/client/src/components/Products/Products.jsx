@@ -28,7 +28,7 @@ export default function Products({ apiData }) {
     <>
      {/* eslint-disable-next-line react/prop-types */}
       {apiData?.map((ele, index) => (
-        <Grid key={index} item md={3} sm={6}>
+        <Grid key={index} item md={3} xs={6}>
           <Card
             sx={{
               border: "1px solid #999",
@@ -95,9 +95,10 @@ export default function Products({ apiData }) {
                   dispatch(addToCart(ele));
                   addToast();
                 }}
+                  sx={{fontSize:{sm:'14px',xs:'11px'}}}
               >
                 Add To Cart
-                <ShoppingCartOutlinedIcon fontSize="medium" sx={{ ml: 2 }} />
+                <ShoppingCartOutlinedIcon fontSize="medium" sx={{ ml: 2 , display:{sm:'block',xs:'none'}}} />
               </Button>
             </CardActions>
           </Card>

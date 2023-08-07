@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom";
 
 export default function Hero() {
   const heroContent = [
-    { img: 'public/hero1.jpg', slogan: 'Osmo\nPocket Series', link: "/category/camera" },
-    { img: 'public/hero2.png', slogan: 'Optimized\nFor The 2-in-l Laptop', link: '/category/laptop' },
-    { img: 'public/hero3.jpg', slogan: 'Smart Band\nPro Version', link: '/category/smart watch' },
+    { img: './hero1.jpg', slogan: 'Osmo\nPocket Series', link: "/category/camera" },
+    { img: './hero2.png', slogan: 'Optimized\nFor The 2-in-l Laptop', link: '/category/laptop' },
+    { img: './hero3.jpg', slogan: 'Smart Band\nPro Version', link: '/category/smart watch' },
   ];
 const navigate = useNavigate()
   return (
