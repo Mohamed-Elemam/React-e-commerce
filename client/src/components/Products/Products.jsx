@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { useNavigate } from "react-router-dom";
-import { Toaster, toast } from "react-hot-toast";
+import {  toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../Redux/cartSlice.js";
 
@@ -104,7 +104,6 @@ export default function Products({ apiData }) {
           </Card>
         </Grid>
       ))}
-      <Toaster position="top-center" reverseOrder={false} />
     </>
   );
 }
