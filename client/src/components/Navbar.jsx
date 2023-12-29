@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -16,24 +15,21 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
- const userToken = localStorage.getItem("userToken");
+const userToken = localStorage.getItem("userToken");
 const user = userToken ? jwtDecode(userToken) : null;
 
 export default function Navbar() {
-
-  const cart = useSelector((state) => state.cart)
+  const cart = useSelector((state) => state.cart);
 
   const getTotalQuantity = () => {
-    let total = 0
-    cart.forEach(item => {
-      total += item.quantity
-    })
-    return total
-  }
-  
-
+    let total = 0;
+    cart.forEach((item) => {
+      total += item.quantity;
+    });
+    return total;
+  };
 
   const navigate = useNavigate();
 
@@ -43,7 +39,6 @@ export default function Navbar() {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
   };
@@ -82,7 +77,6 @@ export default function Navbar() {
   const mobileMenuId = "primary-search-account-menu-mobile";
   const renderMobileMenu = (
     <Menu
-    
       anchorEl={mobileMoreAnchorEl}
       anchorOrigin={{
         vertical: "top",
@@ -99,30 +93,19 @@ export default function Navbar() {
     >
       {userToken ? (
         <MenuItem>
-
-        {user?.length >6 ?
-       (<>
-       
-        <p>
-        {user?.name}
-
-        </p>
-          <PersonOutlineOutlinedIcon sx={{ marginLeft: "8px" }} />
-       </>
-          )
-      :(
-      <>
- <Typography variant="h6" mx={2}>
-        {user?.name}
-          </Typography>
-          <PersonOutlineOutlinedIcon  />
-      </>
-
-
-      )
-      
-         }
-       
+          {user?.length > 6 ? (
+            <>
+              <p>{user?.name}</p>
+              <PersonOutlineOutlinedIcon sx={{ marginLeft: "8px" }} />
+            </>
+          ) : (
+            <>
+              <Typography variant="h6" mx={2}>
+                {user?.name}
+              </Typography>
+              <PersonOutlineOutlinedIcon />
+            </>
+          )}
         </MenuItem>
       ) : (
         <MenuItem
@@ -143,11 +126,9 @@ export default function Navbar() {
         }}
       >
         <Typography variant="h6" mx={2}>
-            Cart
-          </Typography>
-        <Badge
-         badgeContent={getTotalQuantity() || 0}
-          color="primary">
+          Cart
+        </Typography>
+        <Badge badgeContent={getTotalQuantity() || 0} color="primary">
           <ShoppingCartOutlinedIcon />
         </Badge>
       </MenuItem>
@@ -163,8 +144,7 @@ export default function Navbar() {
           <Typography variant="h6" mx={2}>
             Logout
           </Typography>
-            <LogoutOutlinedIcon  />
-         
+          <LogoutOutlinedIcon />
         </MenuItem>
       ) : (
         ""
@@ -183,7 +163,6 @@ export default function Navbar() {
         }}
       >
         <Toolbar>
-
           <Link
             color="inherit"
             underline="none"
@@ -225,7 +204,7 @@ export default function Navbar() {
                 <Typography variant="body1" mx={1}>
                   login
                 </Typography>
-                <PersonOutlineOutlinedIcon  />
+                <PersonOutlineOutlinedIcon />
               </Button>
             )}
 
@@ -236,9 +215,7 @@ export default function Navbar() {
                 navigate("/cart");
               }}
             >
-              <Badge 
-              badgeContent={getTotalQuantity() || 0}
-               color="primary">
+              <Badge badgeContent={getTotalQuantity() || 0} color="primary">
                 <ShoppingCartOutlinedIcon />
               </Badge>
             </IconButton>

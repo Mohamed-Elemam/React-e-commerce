@@ -2,12 +2,10 @@ import axios from "axios";
 import { useFormik } from "formik";
 import { useState } from "react";
 import * as Yup from "yup";
-// eslint-disable-next-line no-unused-vars
-import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
-import {Helmet} from "react-helmet";
+import { Helmet } from "react-helmet";
 
 import {
   Button,
@@ -20,11 +18,10 @@ import {
 } from "@mui/material";
 import { Toaster, toast } from "react-hot-toast";
 
-
 export default function Register() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [apiError, setApiError] = useState('');
+  const [apiError, setApiError] = useState("");
 
   const initialValues = {
     name: "",
@@ -33,7 +30,7 @@ export default function Register() {
     rePassword: "",
     phone: "",
   };
-  
+
   const validationSchema = Yup.object({
     name: Yup.string()
       .min(3, " Name length must be between 3 to 20 characters")
@@ -42,7 +39,7 @@ export default function Register() {
     email: Yup.string()
       .email("Invalid email address")
       .required("Email is required"),
-      password: Yup.string()
+    password: Yup.string()
       .matches(
         /^(?=.*[A-Z])(?=.*[.!@#$%^&*])(?=.*[a-z]).{8,}$/,
         "Password minimum length must be 8 characters or more and contain at least one uppercase letter, one lowercase letter, and one special character."
@@ -61,25 +58,24 @@ export default function Register() {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit:handleSignup,
+    onSubmit: handleSignup,
   });
 
-  async function  handleSignup  (values)  {
+  async function handleSignup(values) {
     try {
-        setLoading(true)
+      setLoading(true);
       const { data } = await axios.post(
-        import.meta.env.VITE_REGISTERATION_API_LINK+"auth/signup",
+        import.meta.env.VITE_REGISTERATION_API_LINK + "auth/signup",
         values
       );
-      
-      localStorage.setItem('userToken',data.token)
+
+      localStorage.setItem("userToken", data.token);
       setLoading(false);
-      navigate('/');
-      toast.success('Signup success')
+      navigate("/");
+      toast.success("Signup success");
     } catch (error) {
-      console.log(error);
       setLoading(false);
-      toast.error(error.response.data.message)
+      toast.error(error.response.data.message);
       setApiError(error.response.data.message);
     }
   }
@@ -87,19 +83,16 @@ export default function Register() {
   React.useEffect(() => {
     const userToken = localStorage.getItem("userToken");
     if (userToken) {
-      navigate("/");}   
-  }, [])
-  
+      navigate("/");
+    }
+  }, []);
+
   return (
     <Container>
-      
-<Toaster
-  position="top-center"
-  reverseOrder={false}
-/>
-    <Helmet>
-    <title>Sign UP</title>
-</Helmet>
+      <Toaster position="top-center" reverseOrder={false} />
+      <Helmet>
+        <title>Sign UP</title>
+      </Helmet>
       <CssBaseline />
       <Box
         sx={{
@@ -128,7 +121,13 @@ export default function Register() {
             maxWidth: "500px",
           }}
         >
-          {apiError ? <Box component={'div'} sx={{ color: "error.main" }}>** {apiError}</Box> : ""}
+          {apiError ? (
+            <Box component={"div"} sx={{ color: "error.main" }}>
+              ** {apiError}
+            </Box>
+          ) : (
+            ""
+          )}
 
           <TextField
             margin="normal"
@@ -231,27 +230,22 @@ export default function Register() {
             >
               Sign Up
             </LoadingButton>
-          ):(<Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign Up
-          </Button>)}
+          ) : (
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              Sign Up
+            </Button>
+          )}
         </Box>
-        <Box  my={2}>
-          <Link
-            href="/login"
-            variant="body2"
-        
-          >
-            <Typography >
-              {"Already have an account? Log In"}
-            </Typography>
+        <Box my={2}>
+          <Link href="/login" variant="body2">
+            <Typography>{"Already have an account? Log In"}</Typography>
           </Link>
         </Box>
-     
       </Box>
     </Container>
   );

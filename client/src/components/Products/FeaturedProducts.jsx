@@ -1,7 +1,6 @@
 // eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { Stack, Typography, Container, Box, Grid } from "@mui/material";
-
 import Products from "./Products.jsx";
 import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -20,31 +19,55 @@ export default function FeaturedProducts() {
     }
   };
 
-  const AllProduct = "/api/products?populate=*";
-  const monitor = "/api/products?populate=*&filters[category][$eq]=monitor";
-  const laptop = "/api/products?populate=*&filters[category][$eq]=laptop";
-  const camera = "/api/products?populate=*&filters[category][$eq]=camera";
+  const AllProducts = "product";
+  const monitor = "product/subcategory/Monitor";
+  const laptop = "product/subcategory/Laptop";
+  const camera = "product/subcategory/Camera";
 
-  async function getAllProducts(link) {
+  async function getAllProducts(param) {
     try {
       const { data } = await axios.get(
-        import.meta.env.VITE_PRODUCTS_API_LINK + link
+        import.meta.env.VITE_PRODUCTS_API_LINK + param
       );
-      setApiData(data.data);
+      setApiData(data.products.slice(0, 4));
     } catch (error) {
-      console.error("Error fetching products:", error);
+      console.log("Error fetching products:", error);
     }
   }
 
   useEffect(() => {
-    getAllProducts(AllProduct);
-  }, [AllProduct]);
+    getAllProducts(AllProducts);
+  }, [AllProducts]);
+
   const categories = [
-    { title: "Show All", param: AllProduct },
+    { title: "Show All", param: AllProducts },
     { title: "Monitor", param: monitor },
     { title: "Laptop", param: laptop },
     { title: "Camera", param: camera },
   ];
+
+  const animationVariants = {
+    initial: {
+      opacity: 0,
+      scale: 0,
+    },
+    animate: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        duration: 0.5,
+        type: "spring",
+        stiffness: 90,
+      },
+    },
+    exit: {
+      opacity: 0,
+      scale: 0,
+      transition: {
+        duration: 0.5,
+      },
+    },
+  };
 
   return (
     <>
@@ -90,16 +113,16 @@ export default function FeaturedProducts() {
           gap={2}
           my={2}
         >
-
           {apiData?.length ? (
-
-            <Grid component={motion.section}
-            layout
-            initial={{ transform: "scale(0)" }}
-            animate={{ transform: "scale(1)" }}
-            exit={{ transform: "scale(0)" }}
-            transition={{duration:.5,type:'spring',stiffness: 90}}
-            container spacing={2} 
+            <Grid
+              component={motion.section}
+              variants={animationVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              layout
+              container
+              spacing={2}
             >
               <Products apiData={apiData.slice("", 8)} />
             </Grid>

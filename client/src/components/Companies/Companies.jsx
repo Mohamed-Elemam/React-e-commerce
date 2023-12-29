@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import { Box, Grid, Container } from "@mui/material";
 
 const companyData = [
@@ -11,10 +9,6 @@ const companyData = [
     name: "Meta",
     imageSrc: "./companies/meta.png",
   },
-  // {
-  //   name: "samsung",
-  //   imageSrc: "./companies/samsung.webp",
-  // },
   {
     name: "OpenAI",
     imageSrc: "./companies/openai.png",
@@ -36,7 +30,7 @@ export default function Companies() {
         <Grid container spacing={2}>
           {companyData.map((company) => (
             <Grid key={company.name} md={2.4} xs={6}>
-              <img src={company.imageSrc} width={'100%'} alt={company.name} />
+              <img src={company.imageSrc} width={"100%"} alt={company.name} />
             </Grid>
           ))}
         </Grid>

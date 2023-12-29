@@ -9,11 +9,10 @@ import Cart from "./components/Cart.jsx";
 import CategoryPage from "./components/Categories/CategoryPage";
 import { Provider } from "react-redux";
 import { persistor, store } from "./components/Redux/useStore";
-import { PersistGate } from 'redux-persist/integration/react';
-
+import { PersistGate } from "redux-persist/integration/react";
 
 function App() {
-   const router = createBrowserRouter([
+  const router = createBrowserRouter([
     {
       path: "/",
       element: <Layout />,
@@ -35,10 +34,9 @@ function App() {
     <>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
-        
-           <RouterProvider router={router} />
-         </PersistGate>
-       </Provider> 
+          <RouterProvider router={router} />
+        </PersistGate>
+      </Provider>
     </>
   );
 }

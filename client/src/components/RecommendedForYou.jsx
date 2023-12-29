@@ -1,6 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
-
 import {
   Box,
   CircularProgress,
@@ -13,7 +10,6 @@ import Products from "./Products/Products.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
-// import { useState } from 'react';
 
 export default function RecommendedForYou() {
   const [apiData, setApiData] = useState([]);
@@ -21,11 +17,10 @@ export default function RecommendedForYou() {
   async function getAllProducts() {
     try {
       const { data } = await axios.get(
-        import.meta.env.VITE_PRODUCTS_API_LINK +
-          "/api/products?populate=*&filters[brand][$eq]=Apple"
+        import.meta.env.VITE_PRODUCTS_API_LINK + "products/brand/Apple"
       );
 
-      setApiData(data.data);
+      setApiData(data.products);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -64,7 +59,7 @@ export default function RecommendedForYou() {
               container
               spacing={2}
               onClick={() => {
-                window.scrollTo({ top: 0, behavior: "smooth" })
+                window.scrollTo({ top: 0, behavior: "smooth" });
               }}
             >
               <Products apiData={apiData.slice("", 4)} />

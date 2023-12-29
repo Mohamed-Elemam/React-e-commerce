@@ -1,9 +1,6 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import { Typography, Link } from "@mui/material";
-
 
 function Copyright(props) {
   return (
@@ -15,10 +12,9 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link color="inherit" href="/" mr={1}>
-        Techmart 
+        Techmart
       </Link>
       {new Date().getFullYear()}
-      
     </Typography>
   );
 }
@@ -32,14 +28,13 @@ const Footer = () => {
         backgroundColor: "#1976d2",
       }}
     >
-      <Container >
-       
-
-<Copyright sx={{ my: 2 ,
-
-color:'#fff'
-}} />
-
+      <Container>
+        <Copyright
+          sx={{
+            my: 2,
+            color: "#fff",
+          }}
+        />
       </Container>
     </Box>
   );

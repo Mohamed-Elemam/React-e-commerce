@@ -7,23 +7,22 @@ import {
   Button,
   Typography,
 } from "@mui/material";
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import { Link } from "react-router-dom";
 import Products from "./Products/Products.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
+
 export default function MayLike() {
   const [apiData, setApiData] = useState([]);
 
   async function getAllProducts() {
     try {
       const { data } = await axios.get(
-        import.meta.env.VITE_PRODUCTS_API_LINK + "/api/products?populate=*&filters[category][$eq]=tablet"
+        import.meta.env.VITE_PRODUCTS_API_LINK + "product/subcategory/Tablet"
       );
 
-      setApiData(data.data);
+      setApiData(data.products);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
@@ -35,73 +34,82 @@ export default function MayLike() {
 
   return (
     <>
-    {apiData?.length?
-      
-      <Container sx={{ mt: 5 }}>
-        <Stack flexDirection={"row"} alignItems={"center"} flexWrap={"wrap"}>
-          <Grid container spacing={2} mt={3}>
-            <Grid item md={8} xs={12}>
-              <Typography sx={{ fontSize: "24px", fontWeight: 500 }}>
-                You may like also
-              </Typography>
+      {apiData?.length ? (
+        <Container sx={{ mt: 5 }}>
+          <Stack flexDirection={"row"} alignItems={"center"} flexWrap={"wrap"}>
+            <Grid container spacing={2} mt={3}>
+              <Grid item md={8} xs={12}>
+                <Typography sx={{ fontSize: "24px", fontWeight: 500 }}>
+                  You may like also
+                </Typography>
+              </Grid>
             </Grid>
-          </Grid>
-        </Stack>
+          </Stack>
 
-        <Grid container spacing={2} my={2}>
-          <Grid
-            item
-            md={2}
-            xs={12}
-            width={"100%"}
-            sx={{
-              ":hover": {
-                scale: "1.05",
-                transition: "all 0.3s",
-               
-              },
-            }}
-          >
-            <Link to={"/category/tablet"}style={{ position: "relative",}}>
-           <Box variant={'div'} height={'100%'}sx={{display:{xs:'none',md:'block'}}}>
-               <img
-                 src="./Group_5919.webp"
-                 height={"100%"}
-                 alt="img"
-                 width={"100%"}
-                 style={{ borderRadius: "5px" }}
-               />
-               <Box sx={{ position: "absolute", top: "2%", left: "14%",color:'#000' }}>
-                 <Typography variant="h6" paragraph>
-                   Flex on All <br />
-                   The Others
-                 </Typography>
-                 <Button variant="text" color="inherit">
-                   Shop Now &gt;
-                 </Button>
-               </Box>
-           </Box >
-            </Link>
-          </Grid>
-          <Grid item md={10} xs={12}>
+          <Grid container spacing={2} my={2}>
+            <Grid
+              item
+              md={2}
+              xs={12}
+              width={"100%"}
+              sx={{
+                ":hover": {
+                  scale: "1.05",
+                  transition: "all 0.3s",
+                },
+              }}
+            >
+              <Link to={"/category/Tablet"} style={{ position: "relative" }}>
+                <Box
+                  variant={"div"}
+                  height={"100%"}
+                  sx={{ display: { xs: "none", md: "block" } }}
+                >
+                  <img
+                    src="./Group_5919.webp"
+                    height={"100%"}
+                    alt="img"
+                    width={"100%"}
+                    style={{ borderRadius: "5px" }}
+                  />
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "2%",
+                      left: "14%",
+                      color: "#000",
+                    }}
+                  >
+                    <Typography variant="h6" paragraph>
+                      Flex on All <br />
+                      The Others
+                    </Typography>
+                    <Button variant="text" color="inherit">
+                      Shop Now &gt;
+                    </Button>
+                  </Box>
+                </Box>
+              </Link>
+            </Grid>
+            <Grid item md={10} xs={12}>
               <Grid container spacing={2}>
                 <Products apiData={apiData.slice("", 4)} />
               </Grid>
-            
+            </Grid>
           </Grid>
-        </Grid>
-      </Container>: (
-              <Box
-                sx={{
-                  display: "flex",
-                  minHeight: "50vh",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <CircularProgress />
-              </Box>
-            )}
+        </Container>
+      ) : (
+        <Box
+          sx={{
+            display: "flex",
+            minHeight: "50vh",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      )}
     </>
   );
 }

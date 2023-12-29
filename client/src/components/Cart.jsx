@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import React from "react";
 import {
   Button,
   Typography,
@@ -37,7 +35,10 @@ export default function Cart() {
   const totalAmount = cartItems.reduce((total, ele) => {
     return total + ele.attributes.price * ele.quantity;
   }, 0);
-  const totalItemCount = cartItems.reduce((total, ele) => total + ele.quantity, 0);
+  const totalItemCount = cartItems.reduce(
+    (total, ele) => total + ele.quantity,
+    0
+  );
 
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => {
@@ -92,8 +93,7 @@ export default function Cart() {
             my={2}
             color="initial"
           >
-            Shooping Cart
-            ({totalItemCount})
+            Shooping Cart ({totalItemCount})
           </Typography>
 
           <Stack
@@ -101,7 +101,8 @@ export default function Cart() {
             alignItems={"center"}
             justifyContent={"center"}
             sx={{
-            fontWeight: 500 }}
+              fontWeight: 500,
+            }}
             my={2}
           >
             {cartItems?.map((ele, index) => (
@@ -121,16 +122,22 @@ export default function Cart() {
                       alt="cartImage"
                     />
                   </Grid>
-                  <Grid item xs={7} sx={{ fontSize:{md:'19px' ,sm:'15px',xs: "14px"} }}>
+                  <Grid
+                    item
+                    xs={7}
+                    sx={{ fontSize: { md: "19px", sm: "15px", xs: "14px" } }}
+                  >
                     {ele?.attributes?.productTitle}
                   </Grid>
-                  <Grid item xs={3} sx={{ fontSize: {md:'19px',sm:'15px' ,xs: "13px"} }}>
+                  <Grid
+                    item
+                    xs={3}
+                    sx={{ fontSize: { md: "19px", sm: "15px", xs: "13px" } }}
+                  >
                     {ele?.attributes?.price} EGP
                   </Grid>
                 </Grid>
 
-
-                
                 <Grid
                   container
                   // mb={5}
@@ -138,7 +145,7 @@ export default function Cart() {
                   alignItems={"center"}
                   justifyContent={"center"}
                 >
-                  <Grid item xs={10} >
+                  <Grid item xs={10}>
                     <IconButton
                       size="small"
                       color="error"

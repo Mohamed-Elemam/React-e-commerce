@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import * as React from "react";
 import {
   Button,
   CssBaseline,
@@ -10,7 +8,7 @@ import {
   Container,
   Divider,
 } from "@mui/material";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -21,15 +19,13 @@ import { useFormik } from "formik";
 import axios from "axios";
 import { Toaster, toast } from "react-hot-toast";
 
-
 export default function LogIn() {
-useEffect(() => {
-  const userToken = localStorage.getItem("userToken");
-  if (userToken) {
-    navigate("/");}
-
- 
-}, [])
+  useEffect(() => {
+    const userToken = localStorage.getItem("userToken");
+    if (userToken) {
+      navigate("/");
+    }
+  }, []);
 
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -60,18 +56,21 @@ useEffect(() => {
 
   const handleDemoLogin = () => {
     const demoUserCredentials = {
-      email: "user@demo.com",
-      password: "User@demo.com",
+      email: import.meta.env.VITE_DEMO_LOGIN_EMAIL,
+      password: import.meta.env.VITE_DEMO_LOGIN_PASSWORD,
     };
     setDemoLoading(true);
 
     handleLogin(demoUserCredentials);
   };
+  console.log(import.meta.env.VITE_DEMO_LOGIN_EMAIL);
+  console.log(import.meta.env.VITE_DEMO_LOGIN_PASSWORD);
 
   async function handleLogin(values) {
     try {
       const { data } = await axios.post(
-        import.meta.env.VITE_REGISTERATION_API_LINK + "auth/signin",values
+        import.meta.env.VITE_REGISTERATION_API_LINK + "auth/signin",
+        values
       );
 
       toast.success("Login success");
@@ -81,7 +80,6 @@ useEffect(() => {
       navigate("/");
       window.location.reload();
     } catch (error) {
-      console.log(error);
       setDemoLoading(false);
       setLoading(false);
       toast.error(error.response.data.message);
@@ -91,155 +89,152 @@ useEffect(() => {
 
   return (
     <>
-      
-        <Container>
-          <Helmet>
-            <title>Log IN</title>
-          </Helmet>
+      <Container>
+        <Helmet>
+          <title>Log IN</title>
+        </Helmet>
 
-          <Toaster position="top-center" reverseOrder={false} />
-          <CssBaseline />
+        <Toaster position="top-center" reverseOrder={false} />
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 15,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Typography component="h1" variant="h5">
+            Login
+          </Typography>
           <Box
+            component="form"
+            onSubmit={formik.handleSubmit}
             sx={{
-              marginTop: 15,
+              mt: 1,
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              justifyContent: "center",
+              gap: ".5px",
+              width: "100%",
+              maxWidth: "500px",
             }}
           >
-            <Typography component="h1" variant="h5">
-              Login
-            </Typography>
-            <Box
-              component="form"
-              onSubmit={formik.handleSubmit}
-              // noValidate
-              sx={{
-                mt: 1,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: ".5px",
-                width: "100%",
-                maxWidth: "500px",
-              }}
-            >
-              {apiError ? (
-                <Box component={"div"} sx={{ color: "error.main" }}>
-                  ** {apiError}
-                </Box>
-              ) : (
-                ""
-              )}
+            {apiError ? (
+              <Box component={"div"} sx={{ color: "error.main" }}>
+                ** {apiError}
+              </Box>
+            ) : (
+              ""
+            )}
 
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                // value={'user@demo.com'}
-                id="email"
-                label="Email Address"
-                name="email"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                autoComplete="email"
-              />
-              {formik.touched.email && formik.errors.email ? (
-                <Box sx={{ color: "error.main" }}>** {formik.errors.email}</Box>
-              ) : (
-                ""
-              )}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              // value={'user@demo.com'}
+              id="email"
+              label="Email Address"
+              name="email"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              autoComplete="email"
+            />
+            {formik.touched.email && formik.errors.email ? (
+              <Box sx={{ color: "error.main" }}>** {formik.errors.email}</Box>
+            ) : (
+              ""
+            )}
 
-              <TextField
-                margin="normal"
-                required
-                fullWidth
-                // value={'User@demo.com'}
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                autoComplete="current-password"
-              />
-              {formik.touched.password && formik.errors.password ? (
-                <Box sx={{ color: "error.main" }}>
-                  ** {formik.errors.password}
-                </Box>
-              ) : (
-                ""
-              )}
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              // value={'User@demo.com'}
+              name="password"
+              label="Password"
+              type="password"
+              id="password"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              autoComplete="current-password"
+            />
+            {formik.touched.password && formik.errors.password ? (
+              <Box sx={{ color: "error.main" }}>
+                ** {formik.errors.password}
+              </Box>
+            ) : (
+              ""
+            )}
 
-              {loading ? (
-                <>
-                  <LoadingButton
-                    loading
-                    loadingPosition="start"
-                    startIcon={<SaveIcon />}
-                    variant="outlined"
-                    fullWidth
-                    sx={{ mt: 3, mb: 2 }}
-                  >
-                    Login
-                  </LoadingButton>
-                </>
-              ) : (
-                <>
-                  <Button
-                    type="button"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={() => {
-                      setLoading(true);
-                      formik.handleSubmit(); 
-                    }}
-                  >
-                    Login
-                  </Button>
-                </>
-              )}
-              <Divider flexItem   style={{margin:'auto' , width:'75%' }}>
+            {loading ? (
+              <>
+                <LoadingButton
+                  loading
+                  loadingPosition="start"
+                  startIcon={<SaveIcon />}
+                  variant="outlined"
+                  fullWidth
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Login
+                </LoadingButton>
+              </>
+            ) : (
+              <>
+                <Button
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={() => {
+                    setLoading(true);
+                    formik.handleSubmit();
+                  }}
+                >
+                  Login
+                </Button>
+              </>
+            )}
+            <Divider flexItem style={{ margin: "auto", width: "75%" }}>
               <h3>or </h3>
-                 </Divider>
+            </Divider>
 
-              {demoLoading ? (
-                <>
-                  <LoadingButton
-                    loading
-                    loadingPosition="start"
-                    startIcon={<SaveIcon />}
-                    variant="outlined"
-                    fullWidth
-                    sx={{ mt: 3, mb: 2 }}
-                  >
-                    Demo login
-                  </LoadingButton>
-                </>
-              ) : (
-                <>
-                  <Button
-                    type="submit"
-                    fullWidth
-                    variant="contained"
-                    sx={{ mt: 3, mb: 2 }}
-                    onClick={handleDemoLogin}
-                  >
-                    Demo login
-                  </Button>
-                </>
-              )}
-            </Box>
-            <Box>
-              <Link href="/signup" variant="body2">
-                {"don't  have an account? Sign Up"}
-              </Link>
-            </Box>
+            {demoLoading ? (
+              <>
+                <LoadingButton
+                  loading
+                  loadingPosition="start"
+                  startIcon={<SaveIcon />}
+                  variant="outlined"
+                  fullWidth
+                  sx={{ mt: 3, mb: 2 }}
+                >
+                  Demo login
+                </LoadingButton>
+              </>
+            ) : (
+              <>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  onClick={handleDemoLogin}
+                >
+                  Demo login
+                </Button>
+              </>
+            )}
           </Box>
-        </Container>
-      
+          <Box>
+            <Link href="/signup" variant="body2">
+              {"don't  have an account? Sign Up"}
+            </Link>
+          </Box>
+        </Box>
+      </Container>
     </>
   );
 }

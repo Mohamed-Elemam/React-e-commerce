@@ -1,5 +1,3 @@
-// eslint-disable-next-line no-unused-vars
-import React, { useState } from "react";
 import {
   Typography,
   Card,
@@ -12,21 +10,21 @@ import {
 } from "@mui/material";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { useNavigate } from "react-router-dom";
-import {  toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../Redux/cartSlice.js";
+import PropTypes from "prop-types";
 
+Products.propTypes = {
+  apiData: PropTypes.array,
+};
 
-// eslint-disable-next-line react/prop-types
 export default function Products({ apiData }) {
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
   const addToast = () => toast.success("Item add to cart 🎉");
-  // eslint-disable-next-line react/prop-types
   return (
     <>
-     {/* eslint-disable-next-line react/prop-types */}
       {apiData?.map((ele, index) => (
         <Grid key={index} item md={3} xs={6}>
           <Card
@@ -48,7 +46,7 @@ export default function Products({ apiData }) {
               underline="none"
               color={"inherit"}
               onClick={() => {
-                navigate(`/product/${ele.id}`);
+                navigate(`/product/${ele._id}`);
               }}
             >
               <CardMedia
@@ -59,13 +57,14 @@ export default function Products({ apiData }) {
                     transition: "all 0.2s",
                   },
                 }}
-                image={ele.attributes.images.data[0].attributes.url}
-                alt={ele.attributes.productTitle}
+                image={ele.images.at(0).secure_url}
+                alt={ele.title}
               />
 
               <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                  {ele.attributes.brand}
+                  {/* /// log*/}
+                  {ele.brand}
                 </Typography>
                 <Typography
                   variant="h6"
@@ -77,12 +76,13 @@ export default function Products({ apiData }) {
                       color: "#2453d3",
                       transition: "color 0.25s",
                     },
+                    textTransform: "capitalize",
                   }}
                 >
-                  {ele.attributes.productTitle}
+                  {ele.title}
                 </Typography>
                 <Typography variant="body1" color="text.secondary">
-                  {ele.attributes.price} EGP
+                  {ele.price} EGP
                 </Typography>
               </CardContent>
             </Link>
@@ -95,10 +95,13 @@ export default function Products({ apiData }) {
                   dispatch(addToCart(ele));
                   addToast();
                 }}
-                  sx={{fontSize:{sm:'14px',xs:'11px'}}}
+                sx={{ fontSize: { sm: "14px", xs: "11px" } }}
               >
                 Add To Cart
-                <ShoppingCartOutlinedIcon fontSize="medium" sx={{ ml: 2 , display:{sm:'block',xs:'none'}}} />
+                <ShoppingCartOutlinedIcon
+                  fontSize="medium"
+                  sx={{ ml: 2, display: { sm: "block", xs: "none" } }}
+                />
               </Button>
             </CardActions>
           </Card>
