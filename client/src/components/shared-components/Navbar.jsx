@@ -6,7 +6,6 @@ import IconButton from "@mui/material/IconButton";
 import { Button, Link, Typography } from "@mui/material";
 import Badge from "@mui/material/Badge";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
-// import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import { useNavigate } from "react-router-dom";
@@ -14,23 +13,16 @@ import jwtDecode from "jwt-decode";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
-
-import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
 
 const userToken = localStorage.getItem("userToken");
 const user = userToken ? jwtDecode(userToken) : null;
 
-export default function Navbar() {
-  const cart = useSelector((state) => state.cart);
+Navbar.propTypes = {
+  ProductsQTY: PropTypes.number.isRequired,
+};
 
-  const getTotalQuantity = () => {
-    let total = 0;
-    cart.forEach((item) => {
-      total += item.quantity;
-    });
-    return total;
-  };
-
+export default function Navbar({ ProductsQTY }) {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -95,13 +87,13 @@ export default function Navbar() {
         <MenuItem>
           {user?.length > 6 ? (
             <>
-              <p>{user?.name}</p>
+              <p>{user?.userName}</p>
               <PersonOutlineOutlinedIcon sx={{ marginLeft: "8px" }} />
             </>
           ) : (
             <>
               <Typography variant="h6" mx={2}>
-                {user?.name}
+                {user?.userName}
               </Typography>
               <PersonOutlineOutlinedIcon />
             </>
@@ -128,7 +120,7 @@ export default function Navbar() {
         <Typography variant="h6" mx={2}>
           Cart
         </Typography>
-        <Badge badgeContent={getTotalQuantity() || 0} color="primary">
+        <Badge badgeContent={ProductsQTY || 0} color="primary">
           <ShoppingCartOutlinedIcon />
         </Badge>
       </MenuItem>
@@ -190,7 +182,7 @@ export default function Navbar() {
                 display="flex"
                 alignItems="center"
               >
-                <p>{user?.name}</p>
+                <p>{user?.userName}</p>
                 <PersonOutlineOutlinedIcon sx={{ marginLeft: "8px" }} />
               </Box>
             ) : (
@@ -215,7 +207,7 @@ export default function Navbar() {
                 navigate("/cart");
               }}
             >
-              <Badge badgeContent={getTotalQuantity() || 0} color="primary">
+              <Badge badgeContent={ProductsQTY || 0} color="primary">
                 <ShoppingCartOutlinedIcon />
               </Badge>
             </IconButton>

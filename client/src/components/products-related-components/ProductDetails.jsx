@@ -7,20 +7,18 @@ import axios from "axios";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Toaster, toast } from "react-hot-toast";
 import { Helmet } from "react-helmet";
-import RecommendedForYou from "../RecommendedForYou.jsx";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../Redux/cartSlice.js";
+import RecommendedForYou from "../shared-components/RecommendedForYou.jsx";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import InnerImageZoom from "react-inner-image-zoom";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { useDispatch } from "react-redux";
+// import { Swiper, SwiperSlide } from "swiper/react";
+// import "swiper/css";
+// import "swiper/css/pagination";
+// import "./styles.css";
+import { addProductToCart } from "../../Redux/cartSlice.js";
 
-import "swiper/css";
-import "swiper/css/pagination";
-
-import "./styles.css";
-
-// import required modules
-import { Pagination } from "swiper/modules";
+// // import required modules
+// import { Pagination } from "swiper/modules";
 
 export default function ProductDetails() {
   const [product, setProduct] = useState(null);
@@ -40,6 +38,7 @@ export default function ProductDetails() {
       setProduct(data.product);
     } catch (error) {
       setApiError(error.response.data.error.message);
+      console.log(error);
     }
   }
   const handleImageClick = (index) => {
@@ -77,7 +76,7 @@ export default function ProductDetails() {
         <Helmet>
           <title>{product?.title}</title>
         </Helmet>
-        (
+
         <Grid container spacing={2} my={5}>
           <Grid item md={2} xs={12} sx={{ ":hover": { cursor: "pointer" } }}>
             <Stack
@@ -87,7 +86,7 @@ export default function ProductDetails() {
             >
               {product?.images?.map((ele, index) => (
                 <Box
-                  width={{ sm: "50%", md: "80%" }}
+                  width={{ sm: "50%" }}
                   key={index}
                   onClick={() => handleImageClick(index)}
                   sx={{
@@ -135,7 +134,8 @@ export default function ProductDetails() {
                 variant="contained"
                 sx={{ borderRadius: "15px", my: 2 }}
                 onClick={() => {
-                  dispatch(addToCart(product));
+                  console.log(product._id);
+                  dispatch(addProductToCart(product._id));
                   toast.success("Item add to cart 🎉");
                 }}
                 endIcon={<ShoppingCartOutlinedIcon />}
@@ -151,7 +151,6 @@ export default function ProductDetails() {
             </Stack>
           </Grid>
         </Grid>
-        )
       </Container>
       {product ? <RecommendedForYou /> : ""}
     </>

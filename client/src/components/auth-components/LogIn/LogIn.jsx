@@ -63,13 +63,11 @@ export default function LogIn() {
 
     handleLogin(demoUserCredentials);
   };
-  console.log(import.meta.env.VITE_DEMO_LOGIN_EMAIL);
-  console.log(import.meta.env.VITE_DEMO_LOGIN_PASSWORD);
 
   async function handleLogin(values) {
     try {
       const { data } = await axios.post(
-        import.meta.env.VITE_REGISTERATION_API_LINK + "auth/signin",
+        import.meta.env.VITE_PRODUCTS_API_LINK + "auth/login",
         values
       );
 
@@ -133,7 +131,6 @@ export default function LogIn() {
               margin="normal"
               required
               fullWidth
-              // value={'user@demo.com'}
               id="email"
               label="Email Address"
               name="email"
@@ -151,7 +148,6 @@ export default function LogIn() {
               margin="normal"
               required
               fullWidth
-              // value={'User@demo.com'}
               name="password"
               label="Password"
               type="password"

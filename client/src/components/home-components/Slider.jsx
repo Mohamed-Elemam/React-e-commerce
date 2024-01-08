@@ -1,12 +1,12 @@
-import "../index.scss";
+import "../../index.scss";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
-import slide1 from "../../public/slider/slider1.jpg";
-import slide2 from "../../public/slider/slider2.jpg";
-import slide3 from "../../public/slider/slider3.jpg";
+import slide1 from "../../../public/slider/slider1.jpg";
+import slide2 from "../../../public/slider/slider2.jpg";
+import slide3 from "../../../public/slider/slider3.jpg";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { Typography, Button, Box, Stack } from "@mui/material";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";

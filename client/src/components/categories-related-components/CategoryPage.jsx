@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Products from "./../Products/Products.jsx";
+import Products from "../products-related-components/Products.jsx";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Container, Grid, Box, Typography } from "@mui/material";
@@ -9,7 +9,6 @@ import { Helmet } from "react-helmet";
 export default function CategoryPage() {
   const { name } = useParams();
   const categoryName = name;
-  // console.log(name)
 
   const [apiData, setApiData] = useState([]);
 

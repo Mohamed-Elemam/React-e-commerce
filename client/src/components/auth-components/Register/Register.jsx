@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useFormik } from "formik";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -24,7 +24,7 @@ export default function Register() {
   const [apiError, setApiError] = useState("");
 
   const initialValues = {
-    name: "",
+    userName: "",
     email: "",
     password: "",
     rePassword: "",
@@ -32,7 +32,7 @@ export default function Register() {
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string()
+    userName: Yup.string()
       .min(3, " Name length must be between 3 to 20 characters")
       .max(20, " Name length must be between 3 to 20 characters")
       .required(" name is required"),
@@ -65,7 +65,7 @@ export default function Register() {
     try {
       setLoading(true);
       const { data } = await axios.post(
-        import.meta.env.VITE_REGISTERATION_API_LINK + "auth/signup",
+        import.meta.env.VITE_PRODUCTS_API_LINK + "auth/signup",
         values
       );
 
@@ -80,7 +80,7 @@ export default function Register() {
     }
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     const userToken = localStorage.getItem("userToken");
     if (userToken) {
       navigate("/");
@@ -135,7 +135,7 @@ export default function Register() {
             fullWidth
             id="name"
             label="Name"
-            name="name"
+            name="userName"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             autoComplete="name"

@@ -5,74 +5,44 @@ import {
   Stack,
   Grid,
   IconButton,
-  Tooltip,
   Box,
   Divider,
 } from "@mui/material";
-
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddCircleOutlineIcon from "@mui/icons-material/AddCircleOutline";
 import RemoveCircleOutlineIcon from "@mui/icons-material/RemoveCircleOutline";
 import { Helmet } from "react-helmet";
-import { useSelector } from "react-redux";
 import {
-  incrementQuantity,
-  decrementQuantity,
-  removeItem,
-  clearCart,
-} from "./Redux/cartSlice.js";
-import { useDispatch } from "react-redux";
+  addProductToCart,
+  decrementProductQty,
+  getUserCart,
+  removeProductFromCart,
+} from "../../Redux/cartSlice.js";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import Modal from "@mui/material/Modal";
 import { Toaster, toast } from "react-hot-toast";
+import { useEffect } from "react";
+import CheckoutBtn from "../cart-related-components/CheckoutBtn.jsx";
 
 export default function Cart() {
-  const dispatch = useDispatch();
-  let userToken = localStorage.getItem("userToken");
-  const cartItems = useSelector((state) => state.cart);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const cartObj = useSelector((state) => state.cart);
 
-  const totalAmount = cartItems.reduce((total, ele) => {
-    return total + ele.attributes.price * ele.quantity;
-  }, 0);
-  const totalItemCount = cartItems.reduce(
-    (total, ele) => total + ele.quantity,
+  let ProductsQTY = cartObj?.cart?.cartItems?.reduce(
+    (acc, item) => acc + item.quantity,
     0
   );
-
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 600,
-    height: "50%",
-    bgcolor: "background.paper",
-    border: "2px solid #000",
-    display: "flex",
-    alignItems: "center",
-    flexDirection: "column",
-    justifyContent: "center",
-    boxShadow: 24,
-    pt: 2,
-    px: 4,
-    pb: 3,
-  };
+  useEffect(() => {
+    dispatch(getUserCart());
+  }, [dispatch]);
 
   return (
     <Container my={8}>
       <Helmet>
         <title>Cart</title>
       </Helmet>
-      {cartItems?.length === 0 ? (
+      {cartObj?.cart?.cartItems?.length === 0 || cartObj?.cart?.length === 0 ? (
         <div style={{ textAlign: "center" }}>
           <Typography variant="h3" my={5} color="initial">
             Cart is empty
@@ -93,10 +63,10 @@ export default function Cart() {
             my={2}
             color="initial"
           >
-            Shooping Cart ({totalItemCount})
+            Shopping Cart ( {ProductsQTY})
           </Typography>
 
-          <Stack
+          <Container
             display={"flex"}
             alignItems={"center"}
             justifyContent={"center"}
@@ -105,42 +75,46 @@ export default function Cart() {
             }}
             my={2}
           >
-            {cartItems?.map((ele, index) => (
-              <>
+            {cartObj?.cart?.cartItems?.map((ele) => (
+              <div key={ele.productId._id}>
                 <Grid
                   container
                   textAlign={"center"}
                   display={"flex"}
                   alignItems={"center"}
                   justifyContent={"center"}
-                  key={index}
                 >
-                  <Grid item xs={2} sx={{ width: { md: "50%", xs: "100%" } }}>
+                  <Grid
+                    item
+                    xs={2}
+                    sx={{ width: { lg: "25%", md: "40%", xs: "100%" } }}
+                  >
                     <img
-                      src={ele?.attributes?.images?.data[0].attributes.url}
-                      style={{ width: "100%", borderRadius: "5px" }}
-                      alt="cartImage"
+                      src={ele?.productId.images?.at(0)?.secure_url}
+                      style={{ width: "70%" }}
                     />
                   </Grid>
                   <Grid
                     item
                     xs={7}
-                    sx={{ fontSize: { md: "19px", sm: "15px", xs: "14px" } }}
+                    sx={{
+                      fontSize: { md: "19px", sm: "15px", xs: "14px" },
+                      textTransform: "capitalize",
+                    }}
                   >
-                    {ele?.attributes?.productTitle}
+                    {ele?.productId.title}
                   </Grid>
                   <Grid
                     item
                     xs={3}
                     sx={{ fontSize: { md: "19px", sm: "15px", xs: "13px" } }}
                   >
-                    {ele?.attributes?.price} EGP
+                    {ele?.price} EGP
                   </Grid>
                 </Grid>
 
                 <Grid
                   container
-                  // mb={5}
                   display={"flex"}
                   alignItems={"center"}
                   justifyContent={"center"}
@@ -150,7 +124,9 @@ export default function Cart() {
                       size="small"
                       color="error"
                       sx={{ mr: 1.5 }}
-                      onClick={() => dispatch(decrementQuantity(ele.id))}
+                      onClick={() => {
+                        dispatch(decrementProductQty(ele.productId._id));
+                      }}
                     >
                       <RemoveCircleOutlineIcon
                         sx={{
@@ -169,7 +145,7 @@ export default function Cart() {
                       color="primary"
                       sx={{ mx: 1.5 }}
                       onClick={() => {
-                        dispatch(incrementQuantity(ele.id));
+                        dispatch(addProductToCart(ele.productId._id));
                       }}
                     >
                       <AddCircleOutlineIcon
@@ -185,7 +161,9 @@ export default function Cart() {
                   <Grid item xs={2}>
                     <IconButton
                       color="error"
-                      onClick={() => dispatch(removeItem(ele.id))}
+                      onClick={() => {
+                        dispatch(removeProductFromCart(ele.productId._id));
+                      }}
                     >
                       <DeleteIcon
                         sx={{
@@ -199,9 +177,9 @@ export default function Cart() {
                   </Grid>
                   <Divider width={"100%"} flexItem></Divider>
                 </Grid>
-              </>
+              </div>
             ))}
-          </Stack>
+          </Container>
         </>
       )}
       <Stack
@@ -212,63 +190,21 @@ export default function Cart() {
         flexDirection={"row"}
         sx={{ textAlign: { xs: "center" }, justifyContent: { xs: "center" } }}
       >
-        <Typography
-          sx={{ typography: { md: "h5", xs: "" } }}
-          flexGrow={1}
-          my={4}
-        >
-          Cart total price is
-          <Box component="span" mx={1}>
-            {totalAmount} EGP
-          </Box>
-        </Typography>
-
-        <Tooltip
-          title={
-            userToken && cartItems.length !== 0
-              ? ""
-              : "Add product to cart then login to checkout"
-          }
-          placement="top"
-        >
-          <span>
-            <Button
-              variant="contained"
-              disabled={!userToken || cartItems.length === 0}
-              onClick={handleOpen}
+        {cartObj?.cart?.totalprice > 0 && (
+          <>
+            <Typography
+              sx={{ typography: { md: "h5", xs: "h5" } }}
+              flexGrow={1}
+              my={4}
             >
-              Proceed to checkout
-            </Button>
-          </span>
-        </Tooltip>
-
-        <Modal
-          onClose={handleClose}
-          open={open}
-          style={{ textAlign: "center" }}
-          aria-labelledby="parent-modal-title"
-          aria-describedby="parent-modal-description"
-        >
-          <Box sx={{ ...style, width: "50%" }}>
-            <h2 id="checkout-modal-title">Checkout Complete</h2>
-
-            <p id="parent-modal-description" style={{ margin: "30px 0" }}>
-              Thank you for purchasing from Techmart.
-              <br />
-              Our team will contact you via phone soon to continue the process.
-            </p>
-            <Button
-              variant="contained"
-              onClick={() => {
-                toast.success("Purchase done 🥳");
-                handleClose();
-                dispatch(clearCart());
-              }}
-            >
-              Continue
-            </Button>
-          </Box>
-        </Modal>
+              Cart total price is
+              <Box component="span" mx={1}>
+                {cartObj?.cart?.totalprice} EGP
+              </Box>
+            </Typography>
+            <CheckoutBtn cartId={cartObj?.cart._id} />
+          </>
+        )}
 
         <Toaster position="top-center" reverseOrder={false} />
       </Stack>

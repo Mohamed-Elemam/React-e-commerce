@@ -11,10 +11,9 @@ import {
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
-import { useDispatch } from "react-redux";
-import { addToCart } from "../Redux/cartSlice.js";
 import PropTypes from "prop-types";
-
+import { useDispatch } from "react-redux";
+import { addProductToCart } from "../../Redux/cartSlice.js";
 Products.propTypes = {
   apiData: PropTypes.array,
 };
@@ -22,7 +21,7 @@ Products.propTypes = {
 export default function Products({ apiData }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const addToast = () => toast.success("Item add to cart 🎉");
+
   return (
     <>
       {apiData?.map((ele, index) => (
@@ -63,7 +62,6 @@ export default function Products({ apiData }) {
 
               <CardContent>
                 <Typography variant="body2" color="text.secondary">
-                  {/* /// log*/}
                   {ele.brand}
                 </Typography>
                 <Typography
@@ -90,10 +88,9 @@ export default function Products({ apiData }) {
               <Button
                 variant="outlined"
                 fullWidth
-                // onClick={handleAddToCart}
                 onClick={() => {
-                  dispatch(addToCart(ele));
-                  addToast();
+                  dispatch(addProductToCart(ele._id));
+                  toast.success("Item add to cart 🎉");
                 }}
                 sx={{ fontSize: { sm: "14px", xs: "11px" } }}
               >

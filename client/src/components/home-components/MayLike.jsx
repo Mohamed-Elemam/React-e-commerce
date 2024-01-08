@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Link } from "react-router-dom";
-import Products from "./Products/Products.jsx";
+import Products from "../products-related-components/Products.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
