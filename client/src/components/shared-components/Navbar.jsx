@@ -15,6 +15,8 @@ import Menu from "@mui/material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
 import PropTypes from "prop-types";
 
+import SearchBar from "./SearchBar.jsx";
+
 const userToken = localStorage.getItem("userToken");
 const user = userToken ? jwtDecode(userToken) : null;
 
@@ -165,13 +167,21 @@ export default function Navbar({ ProductsQTY }) {
             sx={{ ":hover": { cursor: "pointer" } }}
           >
             <Typography
-              variant="h3"
-              sx={{ fontWeight: 700, fontFamily: "Lobster " }}
+              sx={{
+                fontWeight: 700,
+                fontFamily: "Lobster ",
+                fontSize: {
+                  md: "2rem",
+                  sm: "1.5rem",
+                },
+              }}
+              mx={2}
               color="initial"
             >
               Techmart
             </Typography>
           </Link>
+          <SearchBar />
 
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
@@ -211,12 +221,6 @@ export default function Navbar({ ProductsQTY }) {
                 <ShoppingCartOutlinedIcon />
               </Badge>
             </IconButton>
-
-            {/* <IconButton aria-label="favorite-products" color="inherit">
-            <Badge badgeContent={9} color="primary">
-              <FavoriteBorderOutlinedIcon />
-            </Badge>
-          </IconButton> */}
 
             {localStorage.getItem("userToken") ? (
               <IconButton

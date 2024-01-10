@@ -4,18 +4,26 @@ import jwtDecode from "jwt-decode";
 
 let userToken = localStorage.getItem("userToken");
 
-export const getUserCart = createAsyncThunk("cart/getUserCart", async () => {
-  let userId = jwtDecode(userToken)._id;
-  let { data } = await axios.get(
-    import.meta.env.VITE_PRODUCTS_API_LINK + `cart/${userId}`,
-    {
-      headers: {
-        Authorization: `${import.meta.env.VITE_TOKEN_SECRET} ${userToken}`,
-      },
+export const getUserCart = createAsyncThunk(
+  "cart/getUserCart",
+  async (_, thunkAPI) => {
+    const { rejectWithValue } = thunkAPI;
+    let userId = jwtDecode(userToken)._id;
+    try {
+      let { data } = await axios.get(
+        import.meta.env.VITE_PRODUCTS_API_LINK + `cart/${userId}`,
+        {
+          headers: {
+            Authorization: `${import.meta.env.VITE_TOKEN_SECRET} ${userToken}`,
+          },
+        }
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error.message);
     }
-  );
-  return data;
-});
+  }
+);
 
 //increment
 export const addProductToCart = createAsyncThunk(
@@ -82,14 +90,24 @@ const cartSlice = createSlice({
   name: "cart",
   initialState: {
     cart: [],
+    isLoading: false,
+    error: null,
   },
 
   extraReducers: (builder) => {
     builder
+      .addCase(getUserCart.pending, (state, action) => {
+        state.isLoading = true;
+      })
       .addCase(getUserCart.fulfilled, (state, action) => {
+        state.isLoading = false;
         state.cart = action.payload.cart;
       })
+      .addCase(getUserCart.rejected, (state, action) => {
+        state.isLoading = false;
+      })
       .addCase(addProductToCart.fulfilled, (state, action) => {
+        state.isLoading = false;
         const addedProductId = action.payload.addProductId;
         const existingProductIndex = state.cart.cartItems.findIndex(
           (product) => product.productId._id === addedProductId
@@ -101,6 +119,9 @@ const cartSlice = createSlice({
           state.cart.cartItems = action.payload.cart.cartItems;
         }
         state.cart.totalprice = action.payload.cart.totalprice;
+      })
+      .addCase(addProductToCart.rejected, (state, action) => {
+        state.isLoading = false;
       })
       .addCase(removeProductFromCart.fulfilled, (state, action) => {
         let removedProductId = action.payload.removedProduct;

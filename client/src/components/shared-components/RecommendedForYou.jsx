@@ -17,10 +17,9 @@ export default function RecommendedForYou() {
   async function getAllProducts() {
     try {
       const { data } = await axios.get(
-        import.meta.env.VITE_PRODUCTS_API_LINK + "products/brand/Apple"
+        import.meta.env.VITE_PRODUCTS_API_LINK + `product/subcategory/Tablet`
       );
-
-      setApiData(data.products);
+      setApiData(data?.products);
     } catch (error) {
       console.error("Error fetching products:", error);
     }

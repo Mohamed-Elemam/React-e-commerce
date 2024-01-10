@@ -11,14 +11,10 @@ import RecommendedForYou from "../shared-components/RecommendedForYou.jsx";
 import "react-inner-image-zoom/lib/InnerImageZoom/styles.css";
 import InnerImageZoom from "react-inner-image-zoom";
 import { useDispatch } from "react-redux";
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import "swiper/css";
-// import "swiper/css/pagination";
-// import "./styles.css";
 import { addProductToCart } from "../../Redux/cartSlice.js";
-
-// // import required modules
-// import { Pagination } from "swiper/modules";
+import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
+import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined";
+import IconButton from "@mui/material/IconButton";
 
 export default function ProductDetails() {
   const [product, setProduct] = useState(null);
@@ -77,40 +73,38 @@ export default function ProductDetails() {
           <title>{product?.title}</title>
         </Helmet>
 
-        <Grid container spacing={2} my={5}>
-          <Grid item md={2} xs={12} sx={{ ":hover": { cursor: "pointer" } }}>
-            <Stack
-              alignItems={"center"}
-              justifyContent={"center"}
-              flexDirection={{ xs: "row", md: "column" }}
-            >
-              {product?.images?.map((ele, index) => (
-                <Box
-                  width={{ sm: "50%" }}
-                  key={index}
-                  onClick={() => handleImageClick(index)}
-                  sx={{
-                    opacity: index === showImage ? 1 : 0.5,
-                    "&:hover": {
-                      cursor: "pointer",
-                      opacity: index === showImage ? 1 : 0.7,
-                    },
-                    transition: "all 0.5s",
-                  }}
-                >
-                  <img
-                    src={`${product?.images?.at(index - 1).secure_url}`}
-                    width={"100%"}
-                    alt="product image"
-                  />
-                </Box>
-              ))}
-            </Stack>
-          </Grid>
+        <Grid container spacing={2} my={5} justifyContent={"space-around"}>
           <Grid item md={4} xs={12}>
             <InnerImageZoom
               src={`${product?.images?.at(showImage)?.secure_url}`}
             />
+            <Stack
+              flexDirection={"row"}
+              justifyContent={"center"}
+              my={3}
+              gap={5}
+            >
+              <IconButton
+                sx={{ "&:hover": { cursor: "pointer" } }}
+                onClick={() => {
+                  setShowImage(
+                    (showImage - 1 + product?.images?.length) %
+                      product?.images?.length
+                  );
+                }}
+              >
+                <ArrowBackOutlinedIcon />
+              </IconButton>
+              {showImage + 1 + "/" + product?.images?.length}
+              <IconButton
+                sx={{ "&:hover": { cursor: "pointer" } }}
+                onClick={() => {
+                  setShowImage((showImage + 1) % product?.images?.length);
+                }}
+              >
+                <ArrowForwardOutlinedIcon />
+              </IconButton>
+            </Stack>
           </Grid>
           <Grid item md={6} xs={12}>
             <Stack justifyContent={"center"} height={"100%"}>
@@ -156,17 +150,3 @@ export default function ProductDetails() {
     </>
   );
 }
-
-//  <Swiper
-//       slidesPerView={3}
-//       spaceBetween={30}
-//       pagination={{
-//         clickable: true,
-//       }}
-// navigation={true}
-// direction={'vertical'}
-//       modules={[Pagination,Navigation]}
-//       className="mySwiper"
-//     >
-//       <SwiperSlide><img src={`${product?.images?.at(index - 1).secure_url}`} width={"100%"}  alt="product image" /></SwiperSlide>
-//     </Swiper>

@@ -72,7 +72,6 @@ export default function FeaturedCategories() {
         <Typography sx={{ fontSize: "24px", fontWeight: 500 }}>
           Featured Categories
         </Typography>
-        {/* <Link underline="none">View All categories &gt;</Link> */}
       </Stack>
 
       <Grid container spacing={2} mt={3}>
