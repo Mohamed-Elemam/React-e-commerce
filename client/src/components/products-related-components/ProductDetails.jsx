@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
 import { Button, Container, Grid, Stack, Typography, Box } from "@mui/material";
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import ShoppingCartOutlinedIcon from "@mui/icons-material/ShoppingCartOutlined";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -22,7 +21,6 @@ export default function ProductDetails() {
   const [showImage, setShowImage] = useState(0);
   const navigate = useNavigate();
   const { id } = useParams();
-
   const dispatch = useDispatch();
 
   async function getProductData(id) {
@@ -33,19 +31,15 @@ export default function ProductDetails() {
 
       setProduct(data.product);
     } catch (error) {
-      setApiError(error.response.data.error.message);
-      console.log(error);
+      setApiError(error?.response?.data?.message);
     }
   }
-  const handleImageClick = (index) => {
-    setShowImage(index);
-  };
 
   useEffect(() => {
     getProductData(id);
   }, [id]);
-  // ///////log
-  if (apiError == "Not Found") {
+
+  if (apiError == "No product found") {
     navigate("/404");
     return null;
   }
@@ -68,7 +62,6 @@ export default function ProductDetails() {
   return (
     <>
       <Container sx={{ my: 5 }}>
-        <Toaster position="top-center" reverseOrder={false} />
         <Helmet>
           <title>{product?.title}</title>
         </Helmet>
@@ -128,9 +121,12 @@ export default function ProductDetails() {
                 variant="contained"
                 sx={{ borderRadius: "15px", my: 2 }}
                 onClick={() => {
-                  console.log(product._id);
-                  dispatch(addProductToCart(product._id));
-                  toast.success("Item add to cart 🎉");
+                  if (!localStorage.getItem("userToken")) {
+                    navigate("/login");
+                  } else {
+                    dispatch(addProductToCart(product._id));
+                    toast.success("Item add to cart 🎉");
+                  }
                 }}
                 endIcon={<ShoppingCartOutlinedIcon />}
               >

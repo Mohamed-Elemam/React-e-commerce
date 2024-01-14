@@ -13,18 +13,12 @@ import jwtDecode from "jwt-decode";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import MoreIcon from "@mui/icons-material/MoreVert";
-import PropTypes from "prop-types";
-
 import SearchBar from "./SearchBar.jsx";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useState } from "react";
 
-const userToken = localStorage.getItem("userToken");
-const user = userToken ? jwtDecode(userToken) : null;
-
-Navbar.propTypes = {
-  ProductsQTY: PropTypes.number.isRequired,
-};
-
-export default function Navbar({ ProductsQTY }) {
+export default function Navbar() {
   const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -32,6 +26,21 @@ export default function Navbar({ ProductsQTY }) {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const [user, setUser] = useState(null);
+  const userToken = localStorage.getItem("userToken");
+
+  useEffect(() => {
+    const currentUser = userToken ? jwtDecode(userToken) : null;
+    setUser(currentUser);
+  }, [userToken]);
+
+  const cartObj = useSelector((state) => state.cart);
+
+  let ProductsQTY = cartObj?.cart?.cartItems?.reduce(
+    (acc, item) => acc + item.quantity,
+    0
+  );
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -210,31 +219,33 @@ export default function Navbar({ ProductsQTY }) {
               </Button>
             )}
 
-            <IconButton
-              aria-label="shopping-cart"
-              color="inherit"
-              onClick={() => {
-                navigate("/cart");
-              }}
-            >
-              <Badge badgeContent={ProductsQTY || 0} color="primary">
-                <ShoppingCartOutlinedIcon />
-              </Badge>
-            </IconButton>
-
             {localStorage.getItem("userToken") ? (
-              <IconButton
-                aria-label="logout"
-                color="inherit"
-                mx={1}
-                onClick={() => {
-                  localStorage.removeItem("userToken");
-                  navigate("/");
-                  window.location.reload();
-                }}
-              >
-                <LogoutOutlinedIcon />
-              </IconButton>
+              <>
+                <IconButton
+                  aria-label="shopping-cart"
+                  color="inherit"
+                  onClick={() => {
+                    navigate("/cart");
+                  }}
+                >
+                  <Badge badgeContent={ProductsQTY || 0} color="primary">
+                    <ShoppingCartOutlinedIcon />
+                  </Badge>
+                </IconButton>
+
+                <IconButton
+                  aria-label="logout"
+                  color="inherit"
+                  mx={1}
+                  onClick={() => {
+                    localStorage.removeItem("userToken");
+                    navigate("/");
+                    // window.location.reload();
+                  }}
+                >
+                  <LogoutOutlinedIcon />
+                </IconButton>
+              </>
             ) : (
               ""
             )}

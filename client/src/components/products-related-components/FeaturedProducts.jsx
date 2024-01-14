@@ -1,4 +1,3 @@
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
 import { Stack, Typography, Container, Box, Grid } from "@mui/material";
 import Products from "./Products.jsx";
@@ -7,6 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import ToggleButton from "@mui/material/ToggleButton";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import { motion } from "framer-motion";
+import { toast } from "react-hot-toast";
 
 export default function FeaturedProducts() {
   const [apiData, setApiData] = useState([]);
@@ -31,7 +31,7 @@ export default function FeaturedProducts() {
       );
       setApiData(data.products.slice(0, 4));
     } catch (error) {
-      console.log("Error fetching products:", error);
+      toast.error("Error fetching products:", error);
     }
   }
 

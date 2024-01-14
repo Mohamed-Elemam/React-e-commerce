@@ -29,7 +29,7 @@ export default function Companies() {
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
           {companyData.map((company) => (
-            <Grid key={company.name} md={2.4} xs={6}>
+            <Grid item key={company.name} md={2.4} xs={6}>
               <img src={company.imageSrc} width={"100%"} alt={company.name} />
             </Grid>
           ))}

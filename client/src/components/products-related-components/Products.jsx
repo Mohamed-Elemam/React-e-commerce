@@ -89,8 +89,12 @@ export default function Products({ apiData }) {
                 variant="outlined"
                 fullWidth
                 onClick={() => {
-                  dispatch(addProductToCart(ele._id));
-                  toast.success("Item add to cart 🎉");
+                  if (!localStorage.getItem("userToken")) {
+                    navigate("/login");
+                  } else {
+                    dispatch(addProductToCart(ele._id));
+                    toast.success("Item add to cart 🎉");
+                  }
                 }}
                 sx={{ fontSize: { sm: "14px", xs: "11px" } }}
               >

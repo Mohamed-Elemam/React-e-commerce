@@ -1,34 +1,36 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
+import { toast } from "react-hot-toast";
+import { redirect } from "react-router-dom";
 
-let userToken = localStorage.getItem("userToken");
+export let userToken = localStorage.getItem("userToken");
 
-export const getUserCart = createAsyncThunk(
-  "cart/getUserCart",
-  async (_, thunkAPI) => {
-    const { rejectWithValue } = thunkAPI;
-    let userId = jwtDecode(userToken)._id;
-    try {
-      let { data } = await axios.get(
-        import.meta.env.VITE_PRODUCTS_API_LINK + `cart/${userId}`,
-        {
-          headers: {
-            Authorization: `${import.meta.env.VITE_TOKEN_SECRET} ${userToken}`,
-          },
-        }
-      );
-      return data;
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
+//get cart
+export const getUserCart = createAsyncThunk("cart/getUserCart", async () => {
+  let userId = jwtDecode(userToken)._id;
+  try {
+    let { data } = await axios.get(
+      import.meta.env.VITE_PRODUCTS_API_LINK + `cart/${userId}`,
+      {
+        headers: {
+          Authorization: `${import.meta.env.VITE_TOKEN_SECRET} ${userToken}`,
+        },
+      }
+    );
+    return data;
+  } catch (error) {
+    toast.error(error.response.data.message);
   }
-);
+});
 
 //increment
 export const addProductToCart = createAsyncThunk(
   "cart/addToCart",
   async (productId) => {
+    if (!userToken) {
+      redirect("/login");
+    }
     try {
       let { data } = await axios.post(
         import.meta.env.VITE_PRODUCTS_API_LINK + "cart",
@@ -41,7 +43,7 @@ export const addProductToCart = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   }
 );
@@ -62,10 +64,12 @@ export const decrementProductQty = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   }
 );
+
+//remove product
 export const removeProductFromCart = createAsyncThunk(
   "cart/removeFromCart",
   async (productId) => {
@@ -81,7 +85,7 @@ export const removeProductFromCart = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      console.log(error);
+      toast.error(error.response.data.message);
     }
   }
 );
@@ -89,25 +93,29 @@ export const removeProductFromCart = createAsyncThunk(
 const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    cart: [],
-    isLoading: false,
+    cart: {
+      cartItems: [],
+      totalprice: 0,
+    },
+    cartLoading: false,
     error: null,
   },
 
   extraReducers: (builder) => {
     builder
-      .addCase(getUserCart.pending, (state, action) => {
-        state.isLoading = true;
+      .addCase(getUserCart.pending, (state) => {
+        state.cartLoading = true;
       })
       .addCase(getUserCart.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.cartLoading = false;
         state.cart = action.payload.cart;
+        state.cart.totalprice = action.payload.cart.totalprice;
       })
-      .addCase(getUserCart.rejected, (state, action) => {
-        state.isLoading = false;
+      .addCase(getUserCart.rejected, (state) => {
+        // state.cartLoading = true;
       })
       .addCase(addProductToCart.fulfilled, (state, action) => {
-        state.isLoading = false;
+        state.cartLoading = false;
         const addedProductId = action.payload.addProductId;
         const existingProductIndex = state.cart.cartItems.findIndex(
           (product) => product.productId._id === addedProductId
@@ -119,9 +127,6 @@ const cartSlice = createSlice({
           state.cart.cartItems = action.payload.cart.cartItems;
         }
         state.cart.totalprice = action.payload.cart.totalprice;
-      })
-      .addCase(addProductToCart.rejected, (state, action) => {
-        state.isLoading = false;
       })
       .addCase(removeProductFromCart.fulfilled, (state, action) => {
         let removedProductId = action.payload.removedProduct;

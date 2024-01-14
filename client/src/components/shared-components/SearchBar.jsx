@@ -23,6 +23,7 @@ const SearchBar = () => {
     <Autocomplete
       freeSolo
       disableClearable
+      sx={{ width: ["200px", "400px"] }}
       options={searchTerm.map((product) => product.title)}
       renderInput={(params) => (
         <TextField

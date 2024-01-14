@@ -14,20 +14,19 @@ import { useNavigate } from "react-router-dom";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 import { Helmet } from "react-helmet";
-
 import { useFormik } from "formik";
 import axios from "axios";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 export default function LogIn() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     const userToken = localStorage.getItem("userToken");
     if (userToken) {
       navigate("/");
     }
-  }, []);
-
-  const navigate = useNavigate();
+  }, [navigate]);
   const [loading, setLoading] = useState(false);
   const [demoLoading, setDemoLoading] = useState(false);
   const [apiError, setApiError] = useState("");
@@ -51,18 +50,10 @@ export default function LogIn() {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: handleLogin,
+    onSubmit: (values) => {
+      handleLogin(values);
+    },
   });
-
-  const handleDemoLogin = () => {
-    const demoUserCredentials = {
-      email: import.meta.env.VITE_DEMO_LOGIN_EMAIL,
-      password: import.meta.env.VITE_DEMO_LOGIN_PASSWORD,
-    };
-    setDemoLoading(true);
-
-    handleLogin(demoUserCredentials);
-  };
 
   async function handleLogin(values) {
     try {
@@ -71,12 +62,14 @@ export default function LogIn() {
         values
       );
 
+      await localStorage.setItem("userToken", data.token);
+      await localStorage.setItem("userId", data.user._id);
+
       toast.success("Login success");
-      localStorage.setItem("userToken", data.token);
       setLoading(false);
       setDemoLoading(false);
-      navigate("/");
       window.location.reload();
+      navigate("/");
     } catch (error) {
       setDemoLoading(false);
       setLoading(false);
@@ -84,7 +77,14 @@ export default function LogIn() {
       setApiError(error.response.data.message);
     }
   }
-
+  const handleDemoLogin = () => {
+    const demoUserCredentials = {
+      email: import.meta.env.VITE_DEMO_LOGIN_EMAIL,
+      password: import.meta.env.VITE_DEMO_LOGIN_PASSWORD,
+    };
+    setDemoLoading(true);
+    handleLogin(demoUserCredentials);
+  };
   return (
     <>
       <Container>
@@ -92,7 +92,6 @@ export default function LogIn() {
           <title>Log IN</title>
         </Helmet>
 
-        <Toaster position="top-center" reverseOrder={false} />
         <CssBaseline />
         <Box
           sx={{
@@ -163,7 +162,7 @@ export default function LogIn() {
             ) : (
               ""
             )}
-
+            {/* // */}
             {loading ? (
               <>
                 <LoadingButton

@@ -16,7 +16,7 @@ import {
   Typography,
   Container,
 } from "@mui/material";
-import { Toaster, toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -58,7 +58,9 @@ export default function Register() {
   const formik = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: handleSignup,
+    onSubmit: (values) => {
+      handleSignup(values);
+    },
   });
 
   async function handleSignup(values) {
@@ -69,10 +71,11 @@ export default function Register() {
         values
       );
 
-      localStorage.setItem("userToken", data.token);
+      await localStorage.setItem("userToken", data.token);
       setLoading(false);
       navigate("/");
       toast.success("Signup success");
+      window.location.reload();
     } catch (error) {
       setLoading(false);
       toast.error(error.response.data.message);
@@ -81,15 +84,13 @@ export default function Register() {
   }
 
   useEffect(() => {
-    const userToken = localStorage.getItem("userToken");
-    if (userToken) {
+    if (localStorage.getItem("userToken")) {
       navigate("/");
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <Container>
-      <Toaster position="top-center" reverseOrder={false} />
       <Helmet>
         <title>Sign UP</title>
       </Helmet>
@@ -101,7 +102,6 @@ export default function Register() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          // height: '100%',
         }}
       >
         <Typography component="h1" variant="h5">
@@ -110,7 +110,6 @@ export default function Register() {
         <Box
           component="form"
           onSubmit={formik.handleSubmit}
-          // noValidate
           sx={{
             mt: 1,
             display: "flex",

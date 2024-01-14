@@ -1,30 +1,33 @@
 {
-  "name": "server",
-  "private": true,
-  "version": "0.1.0",
-  "description": "A Strapi application",
+  "name": "node-js-e-commerce",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "server.js",
   "scripts": {
-    "develop": "strapi develop",
-    "start": "strapi start",
-    "build": "strapi build",
-    "strapi": "strapi"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "engines": {
+    "node": "18.18.2"
   },
   "dependencies": {
-    "@strapi/plugin-i18n": "4.11.7",
-    "@strapi/plugin-users-permissions": "4.11.7",
-    "@strapi/provider-upload-cloudinary": "^4.11.7",
-    "@strapi/strapi": "4.11.7",
-    "pg": "^8.8.0"
-  },
-  "author": {
-    "name": "A Strapi developer"
-  },
-  "strapi": {
-    "uuid": "707033e2-fb5c-4e27-a79b-098b9961a753"
-  },
-  "engines": {
-    "node": ">=14.19.1 <=18.x.x",
-    "npm": ">=6.0.0"
-  },
-  "license": "MIT"
+    "bcrypt": "^5.1.0",
+    "cloudinary": "^1.40.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2",
+    "moment": "^2.29.4",
+    "mongoose": "^7.4.2",
+    "multer": "^1.4.5-lts.1",
+    "nanoid": "^4.0.2",
+    "nodemailer": "^6.9.4",
+    "slugify": "^1.6.6",
+    "stripe": "^14.9.0"
+  }
 }
