@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import Products from "../products-related-components/Products.jsx";
+import Products from "../product-related/Products.jsx";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Container, Grid, Box, Typography } from "@mui/material";

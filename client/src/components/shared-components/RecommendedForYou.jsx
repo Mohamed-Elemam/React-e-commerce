@@ -6,7 +6,7 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import Products from "../products-related-components/Products.jsx";
+import Products from "../product-related/Products.jsx";
 import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";

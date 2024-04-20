@@ -2,7 +2,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./components/home-components/Home";
 import NotFound from "./components/utils/NotFound.jsx";
-import ProductDetails from "./components/Products-related-components/ProductDetails.jsx";
+import ProductDetails from "./components/product-related/ProductDetails.jsx";
 import Register from "./components/auth-components/Register/Register.jsx";
 import LogIn from "./components/auth-components/LogIn/LogIn.jsx";
 import Cart from "./components/cart-related-components/Cart.jsx";
