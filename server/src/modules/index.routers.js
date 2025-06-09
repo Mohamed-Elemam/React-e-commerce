@@ -28,9 +28,13 @@ export function allRouters(app) {
   app.use("/api/v1/cart", cartRouter);
   app.use("/api/v1/order", orderRouter);
 
-  app.get("/", (req, res) => res.send("Hello World!"));
-
+  app.get("/", (req, res) => res.send("SERVER IS RUNNING"));
   app.all("*", (req, res, next) => {
     next(new Error("404 Not Found URL", { cause: 404 }));
+  });
+
+  app.use((err, req, res, next) => {
+    const statusCode = err.cause || 500;
+    res.status(statusCode).json({ error: err.message });
   });
 }
