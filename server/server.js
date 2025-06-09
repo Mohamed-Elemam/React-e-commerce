@@ -9,14 +9,14 @@ import path from "path";
 import { fileURLToPath } from "url";
 
 const app = express();
+app.use(cors());
+app.use(express.json());
 const port = process.env.PORT;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
 app.post("/webhook", express.raw({ type: "application/json" }), onlineWebhook);
-app.use(cors());
-app.use(express.json());
 
 dbConnection();
 allRouters(app);
